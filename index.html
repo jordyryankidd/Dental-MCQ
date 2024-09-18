@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Oxford Handbook Dentistry Quiz</title>
+    <title>Dentistry Quiz</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -97,6 +97,11 @@
         const nextButton = document.getElementById("next-btn");
 
         function showQuestion(questionIndex) {
+            if (questionIndex >= questions.length) {
+                showResults();
+                return;
+            }
+
             const currentQuestion = questions[questionIndex];
             questionElement.textContent = currentQuestion.question;
             choicesElement.innerHTML = "";
@@ -126,15 +131,15 @@
             nextButton.disabled = false;
         }
 
+        function showResults() {
+            questionElement.textContent = `Quiz complete! You answered ${correctAnswers} out of ${questions.length} questions correctly.`;
+            choicesElement.innerHTML = "";
+            nextButton.style.display = "none";
+        }
+
         nextButton.onclick = () => {
             currentQuestionIndex++;
-            if (currentQuestionIndex < questions.length) {
-                showQuestion(currentQuestionIndex);
-            } else {
-                questionElement.textContent = `Quiz complete! You answered ${correctAnswers} out of ${questions.length} questions correctly.`;
-                choicesElement.innerHTML = "";
-                nextButton.style.display = "none";
-            }
+            showQuestion(currentQuestionIndex);
         };
 
         showQuestion(currentQuestionIndex);
