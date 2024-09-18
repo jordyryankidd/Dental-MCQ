@@ -56,99 +56,55 @@
             font-size: 16px;
             color: #d9534f;
         }
+        .score {
+            margin-top: 20px;
+            font-size: 16px;
+        }
     </style>
 </head>
 <body>
     <div class="quiz-container">
         <h1>Dentistry Quiz</h1>
         <div class="question-container">
-            <p class="question"></p>
+            <p class="question">Loading...</p>
             <ul class="choices"></ul>
-            <button id="next-btn" disabled>Next</button>
+            <button id="next-btn" disabled>Start Quiz</button>
             <div class="feedback"></div>
+            <div class="score">Score: 0</div>
         </div>
     </div>
 
     <script>
-        const questions = [
-            {
-                question: "What is the most appropriate treatment for a displaced mandibular fracture?",
-                choices: ["Observation and analgesia", "Open reduction and internal fixation", "Closed reduction with intermaxillary fixation", "Extraction of fractured teeth"],
-                correctAnswer: 1
-            },
-            {
-                question: "Which nerve is most at risk during third molar surgery?",
-                choices: ["Inferior alveolar nerve", "Lingual nerve", "Buccal nerve", "Mental nerve"],
-                correctAnswer: 1
-            },
-            {
-                question: "What is the main etiological factor of periodontal disease?",
-                choices: ["Dental plaque", "Poor nutrition", "Tobacco use", "Occlusal trauma"],
-                correctAnswer: 0
-            },
-            // Add more questions hereconst allQuestions = [
-    {
-        question: "What is the most common cause of dental caries?",
-        choices: ["Bacterial infection", "Genetic factors", "Dietary habits", "Trauma"],
-        correctAnswer: 0
-    },
-    {
-        question: "Which material is commonly used for dental fillings?",
-        choices: ["Amalgam", "Composite resin", "Gold", "Ceramic"],
-        correctAnswer: 1
-    },
-    {
-        question: "What is the primary function of the pulp in a tooth?",
-        choices: ["Provide tooth sensitivity", "Form the dentin", "Protect the tooth from decay", "Supply nutrients to the tooth"],
-        correctAnswer: 3
-    },
-    {
-        question: "Which tooth is most commonly affected by periapical abscesses?",
-        choices: ["Maxillary first molar", "Mandibular second premolar", "Maxillary central incisor", "Mandibular first molar"],
-        correctAnswer: 3
-    },
-    {
-        question: "What is the primary cause of gingivitis?",
-        choices: ["Bacterial plaque", "Viral infection", "Allergic reaction", "Hormonal changes"],
-        correctAnswer: 0
-    },
-    {
-        question: "Which radiographic technique is used to visualize the entire tooth structure including the root?",
-        choices: ["Bitewing", "Periapical", "Panoramic", "Cephalometric"],
-        correctAnswer: 1
-    },
-    {
-        question: "What type of dental restoration is used to cover a tooth completely?",
-        choices: ["Filling", "Crown", "Bridge", "Inlay"],
-        correctAnswer: 1
-    },
-    {
-        question: "Which bacteria are primarily associated with periodontal disease?",
-        choices: ["Streptococcus mutans", "Porphyromonas gingivalis", "Actinomyces viscosus", "Lactobacillus acidophilus"],
-        correctAnswer: 1
-    },
-    {
-        question: "What is the purpose of a dental sealant?",
-        choices: ["To strengthen the tooth", "To prevent caries", "To whiten the teeth", "To improve bite alignment"],
-        correctAnswer: 1
-    },
-    {
-        question: "Which is a common symptom of temporomandibular joint disorder (TMD)?",
-        choices: ["Tooth sensitivity", "Jaw pain", "Bleeding gums", "Oral ulcers"],
-        correctAnswer: 1
-    },
-    // Add more questions here up to 100
-    // Continue adding questions following the same structure
-];
-
+        const allQuestions = [
+            // Add your questions here in the format:
+            // {
+            //     question: "Question text?",
+            //     choices: ["Choice 1", "Choice 2", "Choice 3", "Choice 4"],
+            //     correctAnswer: 0
+            // }
         ];
 
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        function getRandomQuestions() {
+            const shuffledQuestions = shuffleArray([...allQuestions]);
+            return shuffledQuestions.slice(0, 100); // Number of questions to ask
+        }
+
+        const questions = getRandomQuestions();
         let currentQuestionIndex = 0;
         let correctAnswers = 0;
         const questionElement = document.querySelector(".question");
         const choicesElement = document.querySelector(".choices");
         const feedbackElement = document.querySelector(".feedback");
         const nextButton = document.getElementById("next-btn");
+        const scoreElement = document.querySelector(".score");
 
         function showQuestion(questionIndex) {
             if (questionIndex >= questions.length) {
@@ -170,6 +126,7 @@
                 choicesElement.appendChild(li);
             });
 
+            nextButton.textContent = "Next";
             nextButton.disabled = true;
         }
 
@@ -182,6 +139,7 @@
                 feedbackElement.textContent = `Incorrect. The correct answer is: ${currentQuestion.choices[currentQuestion.correctAnswer]}`;
             }
 
+            scoreElement.textContent = `Score: ${correctAnswers}`;
             nextButton.disabled = false;
         }
 
@@ -196,6 +154,7 @@
             showQuestion(currentQuestionIndex);
         };
 
+        // Start the quiz
         showQuestion(currentQuestionIndex);
     </script>
 </body>
