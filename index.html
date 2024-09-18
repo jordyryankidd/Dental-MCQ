@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Oxford Handbook Dentistry Quiz</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .quiz-container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 600px;
+        }
+        h1 {
+            text-align: center;
+        }
+        .question {
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+        .choices {
+            list-style-type: none;
+            padding: 0;
+        }
+        .choices li {
+            margin-bottom: 10px;
+        }
+        button {
+            display: block;
+            width: 100%;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .feedback {
+            margin-top: 20px;
+            font-size: 16px;
+            color: #d9534f;
+        }
+    </style>
+</head>
+<body>
+    <div class="quiz-container">
+        <h1>Dentistry Quiz</h1>
+        <div class="question-container">
+            <p class="question"></p>
+            <ul class="choices"></ul>
+            <button id="next-btn" disabled>Next</button>
+            <div class="feedback"></div>
+        </div>
+    </div>
+
+    <script>
+        const questions = [
+            {
+                question: "What is the most appropriate treatment for a displaced mandibular fracture?",
+                choices: ["Observation and analgesia", "Open reduction and internal fixation", "Closed reduction with intermaxillary fixation", "Extraction of fractured teeth"],
+                correctAnswer: 1
+            },
+            {
+                question: "Which nerve is most at risk during third molar surgery?",
+                choices: ["Inferior alveolar nerve", "Lingual nerve", "Buccal nerve", "Mental nerve"],
+                correctAnswer: 1
+            },
+            {
+                question: "What is the main etiological factor of periodontal disease?",
+                choices: ["Dental plaque", "Poor nutrition", "Tobacco use", "Occlusal trauma"],
+                correctAnswer: 0
+            },
+            // Add more questions here
+        ];
+
+        let currentQuestionIndex = 0;
+        let correctAnswers = 0;
+        const questionElement = document.querySelector(".question");
+        const choicesElement = document.querySelector(".choices");
+        const feedbackElement = document.querySelector(".feedback");
+        const nextButton = document.getElementById("next-btn");
+
+        function showQuestion(questionIndex) {
+            const currentQuestion = questions[questionIndex];
+            questionElement.textContent = currentQuestion.question;
+            choicesElement.innerHTML = "";
+            feedbackElement.textContent = "";
+
+            currentQuestion.choices.forEach((choice, index) => {
+                const li = document.createElement("li");
+                const button = document.createElement("button");
+                button.textContent = choice;
+                button.onclick = () => checkAnswer(index);
+                li.appendChild(button);
+                choicesElement.appendChild(li);
+            });
+
+            nextButton.disabled = true;
+        }
+
+        function checkAnswer(selectedAnswer) {
+            const currentQuestion = questions[currentQuestionIndex];
+            if (selectedAnswer === currentQuestion.correctAnswer) {
+                feedbackElement.textContent = "Correct!";
+                correctAnswers++;
+            } else {
+                feedbackElement.textContent = `Incorrect. The correct answer is: ${currentQuestion.choices[currentQuestion.correctAnswer]}`;
+            }
+
+            nextButton.disabled = false;
+        }
+
+        nextButton.onclick = () => {
+            currentQuestionIndex++;
+            if (currentQuestionIndex < questions.length) {
+                showQuestion(currentQuestionIndex);
+            } else {
+                questionElement.textContent = `Quiz complete! You answered ${correctAnswers} out of ${questions.length} questions correctly.`;
+                choicesElement.innerHTML = "";
+                nextButton.style.display = "none";
+            }
+        };
+
+        showQuestion(currentQuestionIndex);
+    </script>
+</body>
+</html>
